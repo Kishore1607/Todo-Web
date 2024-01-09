@@ -25,17 +25,18 @@ public class UserController {
         if (newUser != null) {
             return ResponseEntity.ok(newUser);
         } else {
-            return ResponseEntity.badRequest().body("User was not created");
+            return ResponseEntity.badRequest().body("{\"message\": \"User was not created\"}");
         }
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> signIn(@RequestBody UserEntity user) {
+        System.out.println(user.getName());
         UserEntity exist = userRepositoryCustom.loginUser(user);
         if (exist != null) {
             return ResponseEntity.ok(exist);
         } else {
-            return ResponseEntity.badRequest().body("User does not exist");
+            return ResponseEntity.badRequest().body("{\"message\": \"User does not exist\"}");
         }
     }
 }

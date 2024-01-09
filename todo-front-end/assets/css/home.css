@@ -8,15 +8,16 @@
 
 body {
     background-color: #F5F6F8;
-    overflow: hidden;
 }
 
 .sidebar-navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
     display: inline-block;
     min-height: 100vh;
     width: 70px;
     background-color: #313443;
-    float: left;
 
     ul {
         text-align: center;
@@ -37,6 +38,7 @@ body {
             .tooltip {
                 display: inline-block;
                 position: absolute;
+                width: 100px;
                 background-color: #313443;
                 padding: 8px 15px;
                 border-radius: 3px;
@@ -93,6 +95,11 @@ main {
     margin-top: 50px;
 }
 
+.cate{
+    font-size: 20px;
+    margin-top: 60px;
+}
+
 
 .container {
     max-width: 1000px;
@@ -136,11 +143,11 @@ h2 {
 
     .col-1 {
         text-align: start;
-        flex-basis: 50%;
+        flex-basis: 40%;
     }
 
     .col-2 {
-        flex-basis: 10%;
+        flex-basis: 20%;
     }
 
     .col-3 {
@@ -151,12 +158,15 @@ h2 {
         flex-basis: 20%;
     }
 
+    .col-5 {
+        flex-basis: 8%;
+        cursor: pointer;
+    }
+
     @media all and (max-width: 767px) {
         .table-header {
             display: none;
         }
-
-        .table-row {}
 
         li {
             display: block;

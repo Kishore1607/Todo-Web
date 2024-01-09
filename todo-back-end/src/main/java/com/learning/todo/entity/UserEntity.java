@@ -2,6 +2,9 @@ package com.learning.todo.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "user_entity", uniqueConstraints = @UniqueConstraint(name = "entry_pass", columnNames = {"entry_pass"}))
 public class UserEntity {
@@ -15,6 +18,7 @@ public class UserEntity {
 
     @Column(name="entry_pass", nullable = false, length = 100)
     private String entryPass;
+
     public void setId(Long id) {
         this.id = id;
     }

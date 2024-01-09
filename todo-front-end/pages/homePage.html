@@ -15,20 +15,20 @@
 <body>
     <main>
         <nav class="sidebar-navigation">
-            <ul>
-                <li>
+            <ul id="categoryList">
+                <li id="allist">
                     <span class="material-symbols-outlined">demography</span>
                     <span class="tooltip">Your list</span>
                 </li>
-                <li>
+                <li id="completed">
                     <span class="material-symbols-outlined">data_check</span>
                     <span class="tooltip">Completed</span>
                 </li>
-                <li>
+                <li id="ongoing">
                     <span class="material-symbols-outlined">data_table</span>
                     <span class="tooltip">Yet to go</span>
                 </li>
-                <li id="over-due">
+                <li id="overdue">
                     <span class="material-symbols-outlined">data_info_alert</span>
                     <span class="tooltip">Over due</span>
                 </li>
@@ -43,46 +43,16 @@
         </div>
         <section class="content">
             <div class="heading">
-                <h1>Hi ABC! &#128526;</h1>
+                <h1 id="userName"></h1>
+                <p id="heading" class="cate"></p>
             </div>
-            <div class="container">
-                <ul class="responsive-table">
-                    <li class="table-header">
-                        <div class="col col-1">Tasks</div>
-                        <div class="col col-2">Due Date</div>
-                        <div class="col col-3">Priorty</div>
-                        <div class="col col-4">Status</div>
-                    </li>
-                    <li class="table-row">
-                        <div class="col col-1" data-label="Task Name">Running 10KM</div>
-                        <div class="col col-2" data-label="Due Date">16/01/2024</div>
-                        <div class="col col-3" data-label="Priorty"><span class="Pr-1">Urgent</span></div>
-                        <div class="col col-4" data-label="Status"><span class="status1">Completed</span></div>
-                    </li>
-                    <li class="table-row yet-todo">
-                        <div class="col col-1" data-label="Task Name">Want to do home work</div>
-                        <div class="col col-2" data-label="Due Date">03/02/2024</div>
-                        <div class="col col-3" data-label="Priorty"><span class="Pr-3">Low</span></div>
-                        <div class="col col-4" data-label="Status"><span class="status2">Yet to do</span></div>
-                    </li>
-                    <li class="table-row">
-                        <div class="col col-1" data-label="Task Name">Send a email to office</div>
-                        <div class="col col-2" data-label="Due Date">11/04/2024</div>
-                        <div class="col col-3" data-label="Priorty"><span class="Pr-2">Medium</span></div>
-                        <div class="col col-4" data-label="Status"><span class="status3">Over due</span></div>
-                    </li>
-                    <li class="table-row">
-                        <div class="col col-1" data-label="Task Name">Shopping</div>
-                        <div class="col col-2" data-label="Due Date">29/03/2024</div>
-                        <div class="col col-3" data-label="Priorty"><span class="Pr-3">Low</span></div>
-                        <div class="col col-4" data-label="Status"><span class="status1">Completed</span></div>
-                    </li>
-                </ul>
+            <div class="container" id="container">
             </div>
         </section>
+        <div class="scroll-down" id="scrollDown"><span class="material-symbols-outlined">arrow_downward</span></div>
     </main>
 </body>
 <script src="../assets/js/home.js"></script>
-<script src="../assets/js/addForm.js"></script>
+<script type="module" src="../assets/js/crudOps.js"></script>
 
 </html>

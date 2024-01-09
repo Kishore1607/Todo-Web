@@ -24,4 +24,13 @@ public class UserValidation {
 
         return query.getSingleResult() == 0;
     }
+
+    public boolean allowEntry(@Value("${some.property}") String someProperty) {
+        TypedQuery<Long> query = entityManager.createQuery(
+                "SELECT COUNT(u) FROM UserEntity u WHERE u.entryPass = ?1", Long.class);
+
+        query.setParameter(1, someProperty);
+
+        return query.getSingleResult() > 0;
+    }
 }

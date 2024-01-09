@@ -5,14 +5,12 @@ import com.learning.todo.repository.UserRepositoryCustom;
 import com.learning.todo.validation.UserValidation;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
 
 @Service
-//@Validated
-//@Import(UserValidation.class)
 public class UserServiceImpl implements UserRepositoryCustom {
     private final PasswordEncoder passwordEncoder;
     private final UserValidation userValidation;
@@ -30,21 +28,25 @@ public class UserServiceImpl implements UserRepositoryCustom {
 
     @Override
     public UserEntity loginUser(UserEntity user) {
-        TypedQuery<UserEntity> query = null;
+        TypedQuery<UserEntity> query = entityManager.createQuery(
+                "SELECT u FROM UserEntity u WHERE u.name = :name", UserEntity.class);
+        query.setParameter("name", user.getName());
 
-        try {
-            query = entityManager.createQuery(
-                    "SELECT u FROM UserEntity u WHERE u.name = ?1 AND u.password = ?2", UserEntity.class);
+        List<UserEntity> resultList = query.getResultList();
+        System.out.print(resultList.size());
 
-            query.setParameter(1, user.getName());
-            query.setParameter(2, passwordEncoder.encode(user.getPassword()));
-
-            return query.getSingleResult();
-
-        } catch (NoResultException e) {
-            return null;
+        for (UserEntity storedUser : resultList) {
+            if (passwordEncoder.matches(user.getPassword(), storedUser.getPassword())) {
+                UserEntity loginuser = new UserEntity();
+                loginuser.setName(storedUser.getName());
+                loginuser.setEntryPass(storedUser.getEntryPass());
+                return loginuser;
+            }
         }
+
+        return null;
     }
+
 
 
     @Transactional
@@ -55,7 +57,7 @@ public class UserServiceImpl implements UserRepositoryCustom {
         }
 
         newUser.setEntryPass(generateRandomString());
-        newUser.setName(passwordEncoder.encode(newUser.getName()));
+        newUser.setName(newUser.getName());
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         entityManager.createNativeQuery("INSERT INTO user_entity (name, password, entry_pass) VALUES (?,?,?)")
                 .setParameter(1, newUser.getName())
@@ -68,6 +70,22 @@ public class UserServiceImpl implements UserRepositoryCustom {
         responseEntity.setEntryPass(newUser.getEntryPass());
 
         return responseEntity;
+    }
+
+    @Override
+    public long findUserByEntryPass(String name, String token) {
+        TypedQuery<UserEntity> query = entityManager.createQuery(
+                "SELECT u FROM UserEntity u WHERE u.entryPass = :entryPass AND u.name = :name", UserEntity.class);
+        query.setParameter("name", name);
+        query.setParameter("entryPass", token);
+
+        List<UserEntity> resultList = query.getResultList();
+        if (!resultList.isEmpty()) {
+            System.out.print(resultList.get(0).getId());
+            return resultList.get(0).getId();
+        } else {
+            return -1;
+        }
     }
 
 }
