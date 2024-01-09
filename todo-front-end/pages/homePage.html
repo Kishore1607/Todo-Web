@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <link rel="stylesheet" href="../assets/css/home.css">
+    <link rel="stylesheet" href="../assets/css/addForm.css">
+    <title>My todo</title>
+</head>
+
+<body>
+    <main>
+        <nav class="sidebar-navigation">
+            <ul>
+                <li>
+                    <span class="material-symbols-outlined">demography</span>
+                    <span class="tooltip">Your list</span>
+                </li>
+                <li>
+                    <span class="material-symbols-outlined">data_check</span>
+                    <span class="tooltip">Completed</span>
+                </li>
+                <li>
+                    <span class="material-symbols-outlined">data_table</span>
+                    <span class="tooltip">Yet to go</span>
+                </li>
+                <li id="over-due">
+                    <span class="material-symbols-outlined">data_info_alert</span>
+                    <span class="tooltip">Over due</span>
+                </li>
+                <li id="formButton">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    <span class="tooltip">Add new task</span>
+                </li>
+            </ul>
+        </nav>
+        <div id="addForm">
+        </div>
+        </div>
+        <section class="content">
+            <div class="heading">
+                <h1>Hi ABC! &#128526;</h1>
+            </div>
+            <div class="container">
+                <ul class="responsive-table">
+                    <li class="table-header">
+                        <div class="col col-1">Tasks</div>
+                        <div class="col col-2">Due Date</div>
+                        <div class="col col-3">Priorty</div>
+                        <div class="col col-4">Status</div>
+                    </li>
+                    <li class="table-row">
+                        <div class="col col-1" data-label="Task Name">Running 10KM</div>
+                        <div class="col col-2" data-label="Due Date">16/01/2024</div>
+                        <div class="col col-3" data-label="Priorty"><span class="Pr-1">Urgent</span></div>
+                        <div class="col col-4" data-label="Status"><span class="status1">Completed</span></div>
+                    </li>
+                    <li class="table-row yet-todo">
+                        <div class="col col-1" data-label="Task Name">Want to do home work</div>
+                        <div class="col col-2" data-label="Due Date">03/02/2024</div>
+                        <div class="col col-3" data-label="Priorty"><span class="Pr-3">Low</span></div>
+                        <div class="col col-4" data-label="Status"><span class="status2">Yet to do</span></div>
+                    </li>
+                    <li class="table-row">
+                        <div class="col col-1" data-label="Task Name">Send a email to office</div>
+                        <div class="col col-2" data-label="Due Date">11/04/2024</div>
+                        <div class="col col-3" data-label="Priorty"><span class="Pr-2">Medium</span></div>
+                        <div class="col col-4" data-label="Status"><span class="status3">Over due</span></div>
+                    </li>
+                    <li class="table-row">
+                        <div class="col col-1" data-label="Task Name">Shopping</div>
+                        <div class="col col-2" data-label="Due Date">29/03/2024</div>
+                        <div class="col col-3" data-label="Priorty"><span class="Pr-3">Low</span></div>
+                        <div class="col col-4" data-label="Status"><span class="status1">Completed</span></div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+</body>
+<script src="../assets/js/home.js"></script>
+<script src="../assets/js/addForm.js"></script>
+
+</html>
