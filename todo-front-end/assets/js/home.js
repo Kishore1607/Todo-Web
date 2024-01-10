@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const data = await response.json();
-            createCateTable(data);
+            createCateTable(data, num);
 
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error.message);
@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function createCateTable(data) {
+    function createCateTable(data, num) {
 
         container.innerHTML = "";
 
@@ -216,6 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Create table header
         const headerRow = document.createElement('li');
         headerRow.classList.add('table-header');
+        if(num === 1){
         headerRow.innerHTML = `
             <div class="col col-1">Tasks</div>
             <div class="col col-2">Due Date</div>
@@ -224,6 +225,13 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="col col-5"></div>
             <div class="col col-5"></div>
         `;
+        }else{
+            headerRow.innerHTML = `
+            <div class="col col-1">Tasks</div>
+            <div class="col col-2">Due Date</div>
+            <div class="col col-3">Priority</div>
+        `;
+        }
         table.appendChild(headerRow);
 
         // Create table rows
