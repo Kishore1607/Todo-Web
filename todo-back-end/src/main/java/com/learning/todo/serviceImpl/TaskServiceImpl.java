@@ -5,24 +5,26 @@ import com.learning.todo.enumPackage.TaskStatus;
 import com.learning.todo.repository.TaskRepository;
 import com.learning.todo.repository.UserRepositoryCustom;
 import com.learning.todo.serviceInterface.TaskServiceInterface;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TaskServiceImpl implements TaskServiceInterface {
     private final TaskRepository taskRepository;
-    private EntityManager entityManager;
-    private final UserRepositoryCustom userRepositoryCustom;
+    private final EntityManager entityManager;
 
-    public TaskServiceImpl(TaskRepository taskRepository, EntityManager entityManager, UserRepositoryCustom userRepositoryCustom) {
+    public TaskServiceImpl(TaskRepository taskRepository, EntityManager entityManager) {
         this.taskRepository = taskRepository;
         this.entityManager = entityManager;
-        this.userRepositoryCustom = userRepositoryCustom;
     }
     @Override
     public List<TasksEntity> getTasksList(Long userId) {
@@ -70,5 +72,21 @@ public class TaskServiceImpl implements TaskServiceInterface {
     @Override
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateStatusBasedOnDate() {
+        List<TasksEntity> overdueTasks = entityManager.createNativeQuery(
+                        "SELECT * FROM task_entity WHERE STR_TO_DATE(date, '%Y-%m-%d') < CURRENT_DATE AND status = 'Ongoing'", TasksEntity.class)
+                .getResultList();
+        for (TasksEntity task : overdueTasks) {
+            System.out.print(task.toString());
+        };
+
+        for (TasksEntity task : overdueTasks) {
+            task.setStatus(TaskStatus.Overdue);
+        }
+
+        taskRepository.saveAll(overdueTasks);
     }
 }

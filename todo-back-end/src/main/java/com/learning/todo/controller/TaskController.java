@@ -7,6 +7,7 @@ import com.learning.todo.repository.UserRepositoryCustom;
 import com.learning.todo.serviceInterface.TaskServiceInterface;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -126,4 +127,5 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"message\": \"Task not found\"}");
         }
     }
+
 }
