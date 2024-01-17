@@ -3,6 +3,7 @@ package com.learning.todo;
 import com.learning.todo.serviceImpl.TaskServiceImpl;
 import com.learning.todo.serviceImpl.UserServiceImpl;
 import com.learning.todo.serviceInterface.TaskServiceInterface;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +20,6 @@ public class TodoApplication {
 	private UserServiceImpl userServiceImpl;
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(TodoApplication.class, args);
 	}
 

@@ -45,6 +45,20 @@ public class TaskController {
         List<TasksEntity> tasks = taskServiceInterface.getTasksList(userId);
         return ResponseEntity.ok(tasks);
     }
+
+    @GetMapping("/notification/{name}")
+    public ResponseEntity<List<TasksEntity>> getNotificationList(@RequestHeader("Authorization") String authorizationHeader, @PathVariable String name) {
+        String token = authorizationHeader.substring("Bearer ".length());
+
+        long userId = userRepositoryCustom.findUserByEntryPass(name, token);
+
+        if (userId == -1) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        List<TasksEntity> tasks = taskServiceInterface.getNotificationList(userId);
+        return ResponseEntity.ok(tasks);
+    }
     @GetMapping("/tasks/{name}/{status}")
     public ResponseEntity<List<TasksEntity>> getSpecificTaskList(
             @RequestHeader("Authorization") String authorizationHeader,

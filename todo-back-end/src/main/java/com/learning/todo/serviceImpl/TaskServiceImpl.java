@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -73,6 +74,20 @@ public class TaskServiceImpl implements TaskServiceInterface {
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
     }
+
+    @Override
+    public List<TasksEntity> getNotificationList(Long id) {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate oneDayBefore = currentDate.plusDays(1);
+
+        TypedQuery<TasksEntity> query = entityManager.createQuery(
+                "SELECT t FROM TasksEntity t WHERE t.userId = :userId AND t.date = :notificationDate", TasksEntity.class);
+        query.setParameter("userId", id);
+        query.setParameter("notificationDate", oneDayBefore+"");
+
+        return query.getResultList();
+    }
+
 
     @Scheduled(cron = "0 0 0 * * ?")
     public void updateStatusBasedOnDate() {

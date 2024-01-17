@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const user = JSON.parse(sessionStorage.getItem("user"));
+    const token = user.entryPass;
     const container = document.getElementById("container");
 
     document.getElementById("userName").innerHTML = `Hi ${user.name}! &#128526;`
@@ -10,21 +11,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     lis.forEach(li => {
         li.addEventListener("click", function () {
-            // Remove "active" class from all lis
             lis.forEach(item => item.classList.remove("active"));
 
-            // Add "active" class to the clicked li
             li.classList.add("active");
         });
 
         li.addEventListener("mouseover", function () {
-            // Show tooltip on mouseover
             li.querySelector(".tooltip").style.visibility = "visible";
             li.querySelector(".tooltip").style.opacity = 1;
         });
 
         li.addEventListener("mouseout", function () {
-            // Hide tooltip on mouseout
             li.querySelector(".tooltip").style.visibility = "hidden";
             li.querySelector(".tooltip").style.opacity = 0;
         });
@@ -34,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function alltask() {
         try {
-            const token = user.entryPass;
             const response = await fetch(`http://localhost:8080/home/tasks/${user.name}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -52,10 +48,33 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error.message);
         }
+        try {
+            const response = await fetch(`http://localhost:8080/home/notification/${user.name}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            const count = document.getElementById("count");
+            count.innerHTML = data.length;
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error.message);
+        }
     }
 
 
     function createTable(data) {
+
+        const formContainer = document.getElementById("addForm");
+        formContainer.innerHTML="";
+
         const heading = document.getElementById("heading");
         heading.innerHTML = "Your tasks";
         // Assuming 'container' is a reference to the container element
@@ -174,7 +193,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function categorized(num) {
         try {
-            const token = user.entryPass;
             const response = await fetch(`http://localhost:8080/home/tasks/${user.name}/${num}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -208,6 +226,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function createCateTable(data, num) {
 
+        const formContainer = document.getElementById("addForm");
+        formContainer.innerHTML="";
+
         container.innerHTML = "";
 
         const table = document.createElement('ul');
@@ -216,8 +237,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Create table header
         const headerRow = document.createElement('li');
         headerRow.classList.add('table-header');
-        if(num === 1){
-        headerRow.innerHTML = `
+        if (num === 1) {
+            headerRow.innerHTML = `
             <div class="col col-1">Tasks</div>
             <div class="col col-2">Due Date</div>
             <div class="col col-3">Priority</div>
@@ -225,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="col col-5"></div>
             <div class="col col-5"></div>
         `;
-        }else{
+        } else {
             headerRow.innerHTML = `
             <div class="col col-1">Tasks</div>
             <div class="col col-2">Due Date</div>
@@ -238,9 +259,9 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(task => {
             const row = document.createElement('li');
             row.classList.add('table-row');
-            row.classList.add(task.status.toLowerCase().replace(/\s/g, '-')); // Add status class
+            row.classList.add(task.status.toLowerCase().replace(/\s/g, '-'));
 
-            if(task.status === 'Ongoing'){
+            if (task.status === 'Ongoing') {
                 row.innerHTML = `
                 <div class="col col-1" data-label="Task Name">${task.taskName}</div>
                 <div class="col col-2" data-label="Due Date">${task.date}</div>
@@ -249,8 +270,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="col col-5" data-label="Priority"><span class="material-symbols-outlined" data-task-id='${task.id}'>delete</span></div>
                 <div class="col col-5" data-label="Priority"><span class="material-symbols-outlined" data-task-id='${task.id}'>edit</span></div>
             `;
-            }else{
-            row.innerHTML = `
+            } else {
+                row.innerHTML = `
                 <div class="col col-1" data-label="Task Name">${task.taskName}</div>
                 <div class="col col-2" data-label="Due Date">${task.date}</div>
                 <div class="col col-3" data-label="Priority"><span class="Pr-${getPriorityClass(task.priority)}">${task.priority}</span></div>
@@ -261,5 +282,85 @@ document.addEventListener("DOMContentLoaded", function () {
 
         container.appendChild(table);
     }
-});
 
+    //-------------------------- Notification ----------------------//
+
+    const notifiBtn = document.getElementById("notification");
+    notifiBtn.addEventListener("click", notiFetch);
+    async function notiFetch(event) {
+        event.preventDefault();
+        try {
+            const response = await fetch(`http://localhost:8080/home/notification/${user.name}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            const container = document.getElementById("addForm");
+            container.innerHTML = "";
+            const taskForm = `
+                <div id="notify" class="notifilay">
+                    <div id="notifilay" class="taskList"></div>
+                    <div id="close" class="notifyClose">Click anywhere to close</div>
+                </div>`;
+            container.innerHTML += taskForm;
+
+            const closeNotifyBtn = document.getElementById("notify");
+            closeNotifyBtn.addEventListener("click", closeNotify)
+
+            notificationList(data);
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error.message);
+        }
+    }
+
+    function notificationList(data) {
+        const parent = document.getElementById("notifilay");
+
+        parent.innerHTML = "";
+    
+        const heading = document.createElement("h2");
+        heading.setAttribute("class", "notifyTitle");
+        heading.innerHTML = "Tasks Ending in One Day";
+        parent.appendChild(heading);
+    
+        const listContainer = document.createElement("ul");
+        listContainer.className = "task-list";
+    
+        var i = 1;
+        data.forEach(task => {
+            const listItem = document.createElement("li");
+            
+            const taskNameSpan = document.createElement("span");
+            taskNameSpan.innerHTML = `${i}. ${task.taskName} - `;
+            
+            const prioritySpan = document.createElement("span");
+            prioritySpan.innerHTML = `${task.priority} `;
+            prioritySpan.setAttribute("class", `Pr-${getPriorityClass(task.priority)}`);
+        
+            listItem.appendChild(taskNameSpan);
+            listItem.appendChild(prioritySpan);
+        
+            listContainer.appendChild(listItem);
+            
+            i++;
+        });
+    
+        parent.appendChild(listContainer);
+        
+    }
+
+    function closeNotify(event){
+        event.preventDefault();
+        const container = document.getElementById("addForm");
+        container.innerHTML="";
+    }
+    
+});

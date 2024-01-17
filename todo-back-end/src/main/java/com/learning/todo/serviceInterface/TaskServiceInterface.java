@@ -12,4 +12,6 @@ public interface TaskServiceInterface {
     boolean updateTask(TasksEntity tasksEntity);
     void deleteTask(Long  id);
 
+    List<TasksEntity> getNotificationList(Long id);
+
 }
