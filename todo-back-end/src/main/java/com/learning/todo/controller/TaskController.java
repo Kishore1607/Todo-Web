@@ -2,12 +2,14 @@ package com.learning.todo.controller;
 
 import com.learning.todo.entity.TasksEntity;
 import com.learning.todo.enumPackage.TaskStatus;
+import com.learning.todo.kafkaPackage.kafkaModel.KafkaMessageString;
+import com.learning.todo.kafkaPackage.kafkaServices.KafkaProducerService;
 import com.learning.todo.repository.TaskRepository;
 import com.learning.todo.repository.UserRepositoryCustom;
 import com.learning.todo.serviceInterface.TaskServiceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +21,17 @@ public class TaskController {
     private final TaskServiceInterface taskServiceInterface;
     private final UserRepositoryCustom userRepositoryCustom;
     private final TaskRepository taskRepository;
+    private final KafkaProducerService kafkaProducerService;
+//
+    @Autowired
+    private final KafkaMessageString kafkaMessageString;
 
-    public TaskController(TaskServiceInterface taskServiceInterface, UserRepositoryCustom userRepositoryCustom, TaskRepository taskRepository) {
+    public TaskController(TaskServiceInterface taskServiceInterface, UserRepositoryCustom userRepositoryCustom, TaskRepository taskRepository, KafkaProducerService kafkaProducerService, KafkaMessageString kafkaMessageString ) {
         this.taskServiceInterface = taskServiceInterface;
         this.userRepositoryCustom = userRepositoryCustom;
         this.taskRepository = taskRepository;
+        this.kafkaProducerService = kafkaProducerService;
+        this.kafkaMessageString = kafkaMessageString;
     }
 
     private long authenticateUser(String authorizationHeader) {
@@ -77,9 +85,17 @@ public class TaskController {
     @PostMapping("/addtask")
     public ResponseEntity<String> saveTask(@RequestHeader("Authorization") String authorizationHeader, @RequestBody TasksEntity tasksEntity) {
         long userId = authenticateUser(authorizationHeader);
+
+        // Creating the new task
         tasksEntity.setUserId(userId);
         tasksEntity.setStatus(TaskStatus.Ongoing);
         taskServiceInterface.createTask(tasksEntity);
+
+        // Log for crating task after
+        String createLogMessageBefore = kafkaMessageString.createTaskLogMessage("Create-task", tasksEntity, userId, "completed");
+        kafkaProducerService.sendMessage("my-kafka-topic", createLogMessageBefore);
+
+
         return ResponseEntity.ok("{\"message\": \"Task created successfully\"}");
     }
     @PatchMapping("taskComplete/{id}")

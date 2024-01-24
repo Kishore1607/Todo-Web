@@ -71,12 +71,12 @@ public class TaskServiceImpl implements TaskServiceInterface {
     }
 
     @Override
-    public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
+    public void deleteTask(long id) {
+        taskRepository.deleteById((Long) id);
     }
 
     @Override
-    public List<TasksEntity> getNotificationList(Long id) {
+    public List<TasksEntity> getNotificationList(long id) {
         LocalDate currentDate = LocalDate.now();
         LocalDate oneDayBefore = currentDate.plusDays(1);
 

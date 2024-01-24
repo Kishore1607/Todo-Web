@@ -10,8 +10,8 @@ public interface TaskServiceInterface {
     List<TasksEntity> getSpecificTasksList(Long id, String status);
     void createTask(TasksEntity tasksEntity);
     boolean updateTask(TasksEntity tasksEntity);
-    void deleteTask(Long  id);
+    void deleteTask(long  id);
 
-    List<TasksEntity> getNotificationList(Long id);
+    List<TasksEntity> getNotificationList(long id);
 
 }

@@ -46,13 +46,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const form = document.getElementById("taskForm");
       form.addEventListener("submit", async function (event) {
         event.preventDefault();
-        await handleTaskSubmission('http://localhost:8080/home/addtask', 'POST');
+        await handleTaskSubmission('http://localhost:8081/home/addtask', 'POST');
       });
     } else {
       const form = document.getElementById("editTask");
       form.addEventListener("submit", async function (event) {
         event.preventDefault();
-        await handleTaskSubmission('http://localhost:8080/home/edittask', 'PUT');
+        await handleTaskSubmission('http://localhost:8081/home/edittask', 'PUT');
       });
     }
   }
@@ -194,9 +194,9 @@ document.getElementById('container').addEventListener('click', function (event) 
     const taskId = clickedElement.getAttribute('data-task-id');
     
     if (clickedElement.textContent === 'check') {
-      performTaskAction(`http://localhost:8080/home/taskComplete/${taskId}`, 'PATCH');
+      performTaskAction(`http://localhost:8081/home/taskComplete/${taskId}`, 'PATCH');
     } else if (clickedElement.textContent === 'delete') {
-      performTaskAction(`http://localhost:8080/home/deletetask/${taskId}`, 'DELETE');
+      performTaskAction(`http://localhost:8081/home/deletetask/${taskId}`, 'DELETE');
     }
   }
 });

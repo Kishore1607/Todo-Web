@@ -237,19 +237,21 @@ h2 {
 
 .taskList {
     width: 500px;
+    height:70%;
     background-color: white;
-    margin-left: 20px;
+    margin: 20px 0 0 20px;
     border-radius: 20px;
+    overflow-y: scroll;
 }
 
 .notifyTitle {
-    padding-top: 50px;
+    padding-top: 30px;
 }
 
 .task-list {
     padding: 0;
     margin: 10px;
-    padding: 20px;
+    padding: 10px;
 }
 
 .task-list li {

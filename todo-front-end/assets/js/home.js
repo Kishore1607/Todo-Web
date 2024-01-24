@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function alltask() {
         try {
-            const response = await fetch(`http://localhost:8080/home/tasks/${user.name}`, {
+            const response = await fetch(`http://localhost:8081/home/tasks/${user.name}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('There was a problem with the fetch operation:', error.message);
         }
         try {
-            const response = await fetch(`http://localhost:8080/home/notification/${user.name}`, {
+            const response = await fetch(`http://localhost:8081/home/notification/${user.name}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function categorized(num) {
         try {
-            const response = await fetch(`http://localhost:8080/home/tasks/${user.name}/${num}`, {
+            const response = await fetch(`http://localhost:8081/home/tasks/${user.name}/${num}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
     async function notiFetch(event) {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/home/notification/${user.name}`, {
+            const response = await fetch(`http://localhost:8081/home/notification/${user.name}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',

@@ -1,0 +1,16 @@
+<configuration>
+
+    <!-- File Appender -->
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>logs/tasks.log</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root Logger -->
+    <root level="info">
+        <appender-ref ref="file" />
+    </root>
+
+</configuration>
