@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function createTable(data) {
 
         const formContainer = document.getElementById("addForm");
-        formContainer.innerHTML="";
+        formContainer.innerHTML = "";
 
         const heading = document.getElementById("heading");
         heading.innerHTML = "Your tasks";
@@ -140,28 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     alltask();
 
-    // //------------------------down arrow-------------------------//
-    // var scrollDown = document.getElementById("scrollDown");
-
-    // function updateScrollDownVisibility() {
-    //     if (container.scrollHeight > container.clientHeight) {
-    //         scrollDown.style.display = "block";
-    //     } else {
-    //         scrollDown.style.display = "none";
-    //     }
-    // }
-
-    // function scrollToContent() {
-    //     container.scrollIntoView({ behavior: "smooth" });
-    // }
-
-    // window.addEventListener("scroll", updateScrollDownVisibility);
-    // window.addEventListener("resize", updateScrollDownVisibility);
-    // scrollDown.addEventListener("click", scrollToContent);
-
-    // // Initial check on page load
-    // updateScrollDownVisibility();
-
     //--------------------category fetch call-----------------------//
 
     categoryList.addEventListener("click", function (event) {
@@ -184,6 +162,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 case "overdue":
                     heading.innerHTML = "Your over due tasks"
                     categorized(3);
+                    break;
+                case "logout":
+                    logout();
                     break;
                 default:
                     break;
@@ -227,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function createCateTable(data, num) {
 
         const formContainer = document.getElementById("addForm");
-        formContainer.innerHTML="";
+        formContainer.innerHTML = "";
 
         container.innerHTML = "";
 
@@ -325,42 +306,49 @@ document.addEventListener("DOMContentLoaded", function () {
         const parent = document.getElementById("notifilay");
 
         parent.innerHTML = "";
-    
+
         const heading = document.createElement("h2");
         heading.setAttribute("class", "notifyTitle");
         heading.innerHTML = "Tasks Ending in One Day";
         parent.appendChild(heading);
-    
+
         const listContainer = document.createElement("ul");
         listContainer.className = "task-list";
-    
+
         var i = 1;
         data.forEach(task => {
             const listItem = document.createElement("li");
-            
+
             const taskNameSpan = document.createElement("span");
             taskNameSpan.innerHTML = `${i}. ${task.taskName} - `;
-            
+
             const prioritySpan = document.createElement("span");
             prioritySpan.innerHTML = `${task.priority} `;
             prioritySpan.setAttribute("class", `Pr-${getPriorityClass(task.priority)}`);
-        
+
             listItem.appendChild(taskNameSpan);
             listItem.appendChild(prioritySpan);
-        
+
             listContainer.appendChild(listItem);
-            
+
             i++;
         });
-    
+
         parent.appendChild(listContainer);
-        
+
     }
 
-    function closeNotify(event){
+    function closeNotify(event) {
         event.preventDefault();
         const container = document.getElementById("addForm");
-        container.innerHTML="";
+        container.innerHTML = "";
     }
-    
+
+    //---------------------------log out------------------------//
+
+    function logout() {
+        sessionStorage.removeItem("user");
+        window.location.href = "../index.html";
+    }
+
 });

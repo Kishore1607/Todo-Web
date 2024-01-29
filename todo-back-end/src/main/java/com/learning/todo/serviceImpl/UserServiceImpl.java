@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserRepositoryCustom {
         for (UserEntity storedUser : resultList) {
             if (passwordEncoder.matches(user.getPassword(), storedUser.getPassword())) {
                 UserEntity loginuser = new UserEntity();
+                loginuser.setId(storedUser.getId());
                 loginuser.setName(storedUser.getName());
                 loginuser.setEntryPass(storedUser.getEntryPass());
                 return loginuser;
@@ -66,6 +67,7 @@ public class UserServiceImpl implements UserRepositoryCustom {
                 .executeUpdate();
 
         UserEntity responseEntity = new UserEntity();
+        responseEntity.setId(newUser.getId());
         responseEntity.setName(newUser.getName());
         responseEntity.setEntryPass(newUser.getEntryPass());
 

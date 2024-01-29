@@ -13,9 +13,15 @@ public class KafkaController {
         this.kafkaProducerService = kafkaProducerService;
     }
 
-    @GetMapping
-    public String sendMessage(@RequestParam String topic, @RequestParam String value) {
-        kafkaProducerService.sendMessage(topic, value);
+    @GetMapping("/task")
+    public String sendTaskMessage(@RequestParam String topic, @RequestParam String value) {
+        kafkaProducerService.sendTaskMessage(topic, value);
+        return "Message sent to Kafka topic: " + topic;
+    }
+
+    @GetMapping("/user")
+    public String sendUserMessage(@RequestParam String topic, @RequestParam String value) {
+        kafkaProducerService.sendUserMessage(topic, value);
         return "Message sent to Kafka topic: " + topic;
     }
 }

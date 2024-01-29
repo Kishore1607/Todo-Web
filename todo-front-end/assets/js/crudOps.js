@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const user = JSON.parse(sessionStorage.getItem("user"));
       const token = user.entryPass + "$" + user.name;
-      const response = await fetch(`http://localhost:8080/home/task/${id}`, {
+      const response = await fetch(`http://localhost:8081/home/task/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',

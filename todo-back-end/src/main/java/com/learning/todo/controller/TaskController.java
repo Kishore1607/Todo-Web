@@ -2,7 +2,7 @@ package com.learning.todo.controller;
 
 import com.learning.todo.entity.TasksEntity;
 import com.learning.todo.enumPackage.TaskStatus;
-import com.learning.todo.kafkaPackage.kafkaModel.KafkaMessageString;
+import com.learning.todo.kafkaPackage.kafkaModel.KafkaTaskMessageString;
 import com.learning.todo.kafkaPackage.kafkaServices.KafkaProducerService;
 import com.learning.todo.repository.TaskRepository;
 import com.learning.todo.repository.UserRepositoryCustom;
@@ -24,14 +24,14 @@ public class TaskController {
     private final KafkaProducerService kafkaProducerService;
 //
     @Autowired
-    private final KafkaMessageString kafkaMessageString;
+    private final KafkaTaskMessageString kafkaTaskMessageString;
 
-    public TaskController(TaskServiceInterface taskServiceInterface, UserRepositoryCustom userRepositoryCustom, TaskRepository taskRepository, KafkaProducerService kafkaProducerService, KafkaMessageString kafkaMessageString ) {
+    public TaskController(TaskServiceInterface taskServiceInterface, UserRepositoryCustom userRepositoryCustom, TaskRepository taskRepository, KafkaProducerService kafkaProducerService, KafkaTaskMessageString kafkaTaskMessageString ) {
         this.taskServiceInterface = taskServiceInterface;
         this.userRepositoryCustom = userRepositoryCustom;
         this.taskRepository = taskRepository;
         this.kafkaProducerService = kafkaProducerService;
-        this.kafkaMessageString = kafkaMessageString;
+        this.kafkaTaskMessageString = kafkaTaskMessageString;
     }
 
     private long authenticateUser(String authorizationHeader) {
@@ -51,6 +51,11 @@ public class TaskController {
         }
 
         List<TasksEntity> tasks = taskServiceInterface.getTasksList(userId);
+
+        // List all task
+        String getAllTaskListString = kafkaTaskMessageString.statusTaskListLogMessage("Get all task list", userId);
+        kafkaProducerService.sendTaskMessage("task", getAllTaskListString);
+
         return ResponseEntity.ok(tasks);
     }
 
@@ -79,6 +84,11 @@ public class TaskController {
         if (userId == -1) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
+        // specific task list
+        String getTaskListString = kafkaTaskMessageString.statusSpecificTaskListLogMessage("Get specific task list", userId, status);
+        kafkaProducerService.sendTaskMessage("task", getTaskListString);
+
         List<TasksEntity> tasks = taskServiceInterface.getSpecificTasksList(userId, status);
         return ResponseEntity.ok(tasks);
     }
@@ -92,9 +102,8 @@ public class TaskController {
         taskServiceInterface.createTask(tasksEntity);
 
         // Log for crating task after
-        String createLogMessageBefore = kafkaMessageString.createTaskLogMessage("Create-task", tasksEntity, userId, "completed");
-        kafkaProducerService.sendMessage("my-kafka-topic", createLogMessageBefore);
-
+        String createLogMessageBefore = kafkaTaskMessageString.createTaskLogMessage("Create-task", tasksEntity, userId);
+        kafkaProducerService.sendTaskMessage("task", createLogMessageBefore);
 
         return ResponseEntity.ok("{\"message\": \"Task created successfully\"}");
     }
@@ -111,6 +120,11 @@ public class TaskController {
                 TasksEntity tasksEntity = tasksEntityOptional.get();
                 tasksEntity.setStatus(TaskStatus.Completed);
                 taskRepository.save(tasksEntity);
+
+                // Change task status completed
+                String completedString = kafkaTaskMessageString.statusTaskLogMessage("change status completed", userId, id);
+                kafkaProducerService.sendTaskMessage("task", completedString);
+
                 return ResponseEntity.ok("{\"message\": \"Task updated successfully\"}");
             } else {
                 return ResponseEntity.badRequest().body("{\"error\": \"Task not found\"}");
@@ -127,6 +141,11 @@ public class TaskController {
         }
         boolean isEdit = taskServiceInterface.updateTask(tasksEntity);
         if(isEdit){
+
+            // Change task status completed
+            String updatedString = kafkaTaskMessageString.updateTaskLogMessage("Update task", tasksEntity.getId(), tasksEntity, userId );
+            kafkaProducerService.sendTaskMessage("task", updatedString);
+
             return ResponseEntity.ok("{\"message\": \"Task updated successfully\"}");
         } else {
             return ResponseEntity.badRequest().body("{\"error\": \"Task not found\"}");
@@ -139,6 +158,11 @@ public class TaskController {
             return ResponseEntity.badRequest().body("{\"message\": \"User not found\"}");
         }
         taskServiceInterface.deleteTask(id);
+
+        // Change task status completed
+        String deleteString = kafkaTaskMessageString.statusTaskLogMessage("change status deleted", userId, id);
+        kafkaProducerService.sendTaskMessage("task", deleteString);
+
         return  ResponseEntity.ok("{\"message\": \"Task deleted successfully\"}");
     }
     @GetMapping("task/{id}")
@@ -152,6 +176,11 @@ public class TaskController {
         Optional<TasksEntity> tasksEntityOptional = taskRepository.findById(id);
 
         if (tasksEntityOptional.isPresent()) {
+
+            // Change task status completed
+            String getTaskString = kafkaTaskMessageString.getTaskLogMessage("Get task by task Id", userId, tasksEntityOptional.get().getId());
+            kafkaProducerService.sendTaskMessage("task", getTaskString);
+
             return ResponseEntity.ok(tasksEntityOptional);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"message\": \"Task not found\"}");

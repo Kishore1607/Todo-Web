@@ -1,16 +1,28 @@
 <configuration>
 
-    <!-- File Appender -->
-    <appender name="file" class="ch.qos.logback.core.FileAppender">
+    <appender name="tasks" class="ch.qos.logback.core.FileAppender">
         <file>logs/tasks.log</file>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- Root Logger -->
-    <root level="info">
-        <appender-ref ref="file" />
-    </root>
+    <!-- File Appender for Users -->
+    <appender name="users" class="ch.qos.logback.core.FileAppender">
+        <file>logs/users.log</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Task Logger -->
+    <logger name="com.learning.todo.kafkaPackage.kafkaServices.KafkaConsumerService.consumeTask" level="info">
+        <appender-ref ref="tasks" />
+    </logger>
+
+    <!-- User Logger -->
+    <logger name="com.learning.todo.kafkaPackage.kafkaServices.KafkaConsumerService.consumeUser" level="info">
+        <appender-ref ref="users" />
+    </logger>
 
 </configuration>
