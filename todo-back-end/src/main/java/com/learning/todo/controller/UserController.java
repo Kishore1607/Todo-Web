@@ -41,15 +41,27 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> signIn(@RequestBody UserEntity user) {
-        System.out.println(user.getName());
         UserEntity exist = userRepositoryCustom.loginUser(user);
         if (exist != null) {
-
             // exist user log info
-            String loginLog = ("{action name: login, logined UserID: "+exist.getId()+"}");
+            String loginLog = ("{action name: login, logging UserID: "+exist.getId()+"}");
             kafkaProducerService.sendUserMessage("user", loginLog);
 
             return ResponseEntity.ok(exist);
+        } else {
+            return ResponseEntity.badRequest().body("{\"message\": \"User does not exist\"}");
+        }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> signOut(@RequestBody UserEntity user) {
+        long exist = userRepositoryCustom.findUserByEntryPass(user.getName(), user.getEntryPass());
+        if (exist != -1) {
+            // exist user log info
+            String loginLog = ("{action name: logout, logged out UserID: "+exist+"}");
+            kafkaProducerService.sendUserMessage("user", loginLog);
+
+            return ResponseEntity.ok("successfully logged out");
         } else {
             return ResponseEntity.badRequest().body("{\"message\": \"User does not exist\"}");
         }

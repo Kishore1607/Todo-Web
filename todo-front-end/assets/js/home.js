@@ -346,9 +346,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //---------------------------log out------------------------//
 
-    function logout() {
-        sessionStorage.removeItem("user");
-        window.location.href = "../index.html";
+    async function logout() {
+        try {
+            const response = await fetch("http://localhost:8081/users/logout", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: user.name,
+                    entryPass: user.entryPass,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            if (response.status === 200) {
+                sessionStorage.removeItem("user");
+                window.location.href = "../index.html";
+            };
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
     }
+
 
 });

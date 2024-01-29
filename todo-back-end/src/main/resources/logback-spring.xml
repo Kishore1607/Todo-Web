@@ -1,5 +1,6 @@
 <configuration>
 
+    <!-- Appender for tasks -->
     <appender name="tasks" class="ch.qos.logback.core.FileAppender">
         <file>logs/tasks.log</file>
         <encoder>
@@ -7,7 +8,7 @@
         </encoder>
     </appender>
 
-    <!-- File Appender for Users -->
+    <!-- Appender for users -->
     <appender name="users" class="ch.qos.logback.core.FileAppender">
         <file>logs/users.log</file>
         <encoder>
@@ -16,12 +17,12 @@
     </appender>
 
     <!-- Task Logger -->
-    <logger name="com.learning.todo.kafkaPackage.kafkaServices.KafkaConsumerService.consumeTask" level="info">
+    <logger name="com.learning.todo.kafkaPackage.kafkaServices.KafkaTaskConsumerService" level="info">
         <appender-ref ref="tasks" />
     </logger>
 
     <!-- User Logger -->
-    <logger name="com.learning.todo.kafkaPackage.kafkaServices.KafkaConsumerService.consumeUser" level="info">
+    <logger name="com.learning.todo.kafkaPackage.kafkaServices.KafkaUserConsumerService" level="info">
         <appender-ref ref="users" />
     </logger>
 

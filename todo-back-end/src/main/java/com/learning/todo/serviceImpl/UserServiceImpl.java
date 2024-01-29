@@ -83,7 +83,6 @@ public class UserServiceImpl implements UserRepositoryCustom {
 
         List<UserEntity> resultList = query.getResultList();
         if (!resultList.isEmpty()) {
-            System.out.print(resultList.get(0).getId());
             return resultList.get(0).getId();
         } else {
             return -1;

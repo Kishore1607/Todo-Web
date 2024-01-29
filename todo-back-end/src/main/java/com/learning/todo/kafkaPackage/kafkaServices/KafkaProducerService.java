@@ -24,7 +24,3 @@ public class KafkaProducerService {
         userTemplate.send(new ProducerRecord<>(topic, value));
     }
 }
-
-
-
-

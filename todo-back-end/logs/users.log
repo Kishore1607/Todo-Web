@@ -1,0 +1,2 @@
+17:18:56.775 [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] INFO  c.l.t.k.k.KafkaUserConsumerService - User message - Value: {action name: logout, logged out UserID: 1}
+17:20:51.840 [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] INFO  c.l.t.k.k.KafkaUserConsumerService - User message - Value: {action name: logout, logged out UserID: 1}

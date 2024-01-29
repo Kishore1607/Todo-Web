@@ -1,0 +1,6 @@
+17:13:56.551 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  c.l.t.k.k.KafkaTaskConsumerService - Task message - Value: { actionName=' Get all task list, userId= 1}
+17:14:09.482 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  c.l.t.k.k.KafkaTaskConsumerService - Task message - Value: { actionName=' Get all task list, userId= 1}
+17:14:36.478 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  c.l.t.k.k.KafkaTaskConsumerService - Task message - Value: { actionName=' Get all task list, userId= 1}
+17:15:15.254 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  c.l.t.k.k.KafkaTaskConsumerService - Task message - Value: { actionName=' Get all task list, userId= 1}
+17:20:47.947 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  c.l.t.k.k.KafkaTaskConsumerService - Task message - Value: { actionName=' Get all task list, userId= 1}
+17:20:50.201 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  c.l.t.k.k.KafkaTaskConsumerService - Task message - Value: { actionName=' Get all task list, userId= 1}
