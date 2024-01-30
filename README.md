@@ -1,17 +1,11 @@
 #  Todo-Web
 This is a simple To-Do web application built using Spring Boot for the backend, HTML/CSS/JS for the frontend, and MySQL as the database.
 
-## Prerequisites
--   Java JDK (11 or higher)
+## Utilize
+-   Java (OpenJDK Runtime Environment Corretto-11.0.22.7.1)
 -   Maven
 -   MySQL
--   IDE (Eclipse, IntelliJ, or any of your choice)
-
-## Prerequisites
--   Java JDK (11 or higher)
--   Maven
--   MySQL
--   IDE (Eclipse, IntelliJ, or any of your choice)
+-   IDE (IntelliJ, Vscode, sequel pro)
 
 ## Project Structure
 - **Backend:**
@@ -19,7 +13,7 @@ This is a simple To-Do web application built using Spring Boot for the backend, 
 	-   `src/main/resources`: Configuration files and static resources.
 	-   `pom.xml`: Maven project configuration file
 - **Frontend:**
-    - `assest/js`: Frontend JS files.
+        - `assest/js`: Frontend JS files.
 	- `assest/css`: Frontend CSS files.
 	- `assest/pages`: Frontend Other html files.
 	- `index`: Index html page
@@ -27,7 +21,7 @@ This is a simple To-Do web application built using Spring Boot for the backend, 
 ## Features
 -  Login, Register, logout (CRUD) users.
 -  Create, Read, Update, and Delete (CRUD) tasks.
--   Minimalistic user interface for a clean user experience.
+-  Minimalistic user interface for a clean user experience.
 
 ## Technologies Used
 -   **Backend:**
@@ -35,14 +29,10 @@ This is a simple To-Do web application built using Spring Boot for the backend, 
     -   Spring Data JPA
 -   **Frontend:**
     -   HTML
-    -   CSS (Bootstrap for styling)
-    -   JavaScript (jQuery for AJAX calls)
+    -   CSS (Classic)
+    -   JavaScript
 -   **Database:**
     -   MySQL
-
-
-## Flow diagrams
-
 
 ## Flow diagrams
 
